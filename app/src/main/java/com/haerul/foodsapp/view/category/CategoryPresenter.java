@@ -1,9 +1,4 @@
-/*-----------------------------------------------------------------------------
- - Developed by Haerul Muttaqin                                               -
- - Last modified 3/24/19 5:13 AM                                              -
- - Subscribe : https://www.youtube.com/haerulmuttaqin                         -
- - Copyright (c) 2019. All rights reserved                                    -
- -----------------------------------------------------------------------------*/
+
 package com.haerul.foodsapp.view.category;
 
 import android.support.annotation.NonNull;
@@ -24,15 +19,17 @@ public class CategoryPresenter {
     
     void getMealByCategory(String category) {
         
+        //  Make request meals by category
         view.showLoading();
         Call<Meals> mealsCall = Utils.getApi().getMealByCategory(category);
         mealsCall.enqueue(new Callback<Meals>() {
             @Override
             public void onResponse(@NonNull Call<Meals> call,@NonNull Response<Meals> response) {
                 view.hideLoading();
-                if (response.isSuccessful() && response.body() != null) {
+                if(response.isSuccessful() && response.body() != null){
                     view.setMeals(response.body().getMeals());
-                } else {
+                }else{
+
                     view.onErrorLoading(response.message());
                 }
             }
@@ -43,6 +40,5 @@ public class CategoryPresenter {
                 view.onErrorLoading(t.getLocalizedMessage());
             }
         });
-        
     }
 }

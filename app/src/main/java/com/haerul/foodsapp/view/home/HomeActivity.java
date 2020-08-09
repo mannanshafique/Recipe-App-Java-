@@ -1,9 +1,3 @@
-/*-----------------------------------------------------------------------------
- - Developed by Haerul Muttaqin                                               -
- - Last modified 3/17/19 5:24 AM                                              -
- - Subscribe : https://www.youtube.com/haerulmuttaqin                         -
- - Copyright (c) 2019. All rights reserved                                    -
- -----------------------------------------------------------------------------*/
 package com.haerul.foodsapp.view.home;
 
 import android.content.Intent;
@@ -13,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.haerul.foodsapp.R;
 import com.haerul.foodsapp.Utils;
@@ -22,6 +16,9 @@ import com.haerul.foodsapp.adapter.ViewPagerHeaderAdapter;
 import com.haerul.foodsapp.model.Categories;
 import com.haerul.foodsapp.model.Meals;
 import com.haerul.foodsapp.view.category.CategoryActivity;
+import com.haerul.foodsapp.view.detail.DetailActivity;
+import com.haerul.foodsapp.view.home.HomePresenter;
+import com.haerul.foodsapp.view.home.HomeView;
 
 import java.io.Serializable;
 import java.util.List;
@@ -35,10 +32,11 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     public static final String EXTRA_POSITION = "position";
     public static final String EXTRA_DETAIL = "detail";
 
-    @BindView(R.id.viewPagerHeader) ViewPager viewPagerMeal;
+    //View Pager In header and recycle for categories ko bind yani initalize kia
+    @BindView(R.id.viewPagerHeader) ViewPager viewPagerMeal;          //In most cases, view binding replaces findViewById.
     @BindView(R.id.recyclerCategory) RecyclerView recyclerViewCategory;
 
-    HomePresenter presenter;
+    HomePresenter presenter;    // Presenter class
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +45,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         ButterKnife.bind(this);
 
         presenter = new HomePresenter(this);
-        presenter.getMeals();
-        presenter.getCategories();
+        presenter.getMeals();    //presenter get the meals from api through model class Meals
+        presenter.getCategories(); //presenter get the mealsCategory from api through model class Categories
     }
 
     @Override
@@ -64,14 +62,17 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     }
 
     @Override
-    public void setMeal(List<Meals.Meal> meal) {
+    public void setMeal(List<Meals.Meal> meal) {  // in that place i set adapter
         ViewPagerHeaderAdapter headerAdapter = new ViewPagerHeaderAdapter(meal, this);
         viewPagerMeal.setAdapter(headerAdapter);
         viewPagerMeal.setPadding(20, 0, 150, 0);
         headerAdapter.notifyDataSetChanged();
 
-        headerAdapter.setOnItemClickListener((v, position) -> {
-            //TODO #8.1 make an intent to DetailActivity (get the name of the meal from the edit text view, then send the name of the meal to DetailActivity)
+        headerAdapter.setOnItemClickListener((view, position) -> {
+            TextView mealName = view.findViewById(R.id.mealName);
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra(EXTRA_DETAIL,mealName.getText().toString());
+            startActivity(intent);
         });
     }
 
@@ -87,6 +88,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
         homeAdapter.setOnItemClickListener((view, position) -> {
             Intent intent = new Intent(this, CategoryActivity.class);
+            // add extra data (put to intent)
             intent.putExtra(EXTRA_CATEGORY, (Serializable) category);
             intent.putExtra(EXTRA_POSITION, position);
             startActivity(intent);

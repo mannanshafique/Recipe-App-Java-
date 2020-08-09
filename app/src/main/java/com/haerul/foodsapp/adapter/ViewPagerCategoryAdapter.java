@@ -1,9 +1,4 @@
-/*-----------------------------------------------------------------------------
- - Developed by Haerul Muttaqin                                               -
- - Last modified 3/24/19 12:40 PM                                             -
- - Subscribe : https://www.youtube.com/haerulmuttaqin                         -
- - Copyright (c) 2019. All rights reserved                                    -
- -----------------------------------------------------------------------------*/
+
 package com.haerul.foodsapp.adapter;
 
 import android.os.Bundle;
@@ -30,9 +25,10 @@ public class ViewPagerCategoryAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int i) {
         CategoryFragment fragment = new CategoryFragment();
         Bundle args = new Bundle();
-        args.putString("EXTRA_DATA_NAME", categories.get(i).getStrCategory());
-        args.putString("EXTRA_DATA_DESC", categories.get(i).getStrCategoryDescription());
-        args.putString("EXTRA_DATA_IMAGE", categories.get(i).getStrCategoryThumb());
+        // Add arguments to fragment
+        args.putString("EXTRA_DATA_NAME",categories.get(i).getStrCategory());
+        args.putString("EXTRA_DATA_DESC",categories.get(i).getStrCategoryDescription());
+        args.putString("EXTRA_DATA_IMAGE",categories.get(i).getStrCategoryThumb());
         fragment.setArguments(args);
         return fragment;
     }

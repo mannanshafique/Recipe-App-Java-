@@ -1,9 +1,4 @@
-/*-----------------------------------------------------------------------------
- - Developed by Haerul Muttaqin                                               -
- - Last modified 4/7/19 7:07 PM                                               -
- - Subscribe : https://www.youtube.com/haerulmuttaqin                         -
- - Copyright (c) 2019. All rights reserved                                    -
- -----------------------------------------------------------------------------*/
+
 package com.haerul.foodsapp.view.detail;
 
 import android.support.annotation.NonNull;
@@ -23,11 +18,27 @@ public class DetailPresenter {
     }
 
     void getMealById(String mealName) {
-        
-        //TODO #5 Call the void show loading before starting to make a request to the server
-        
-        //TODO #6 Make a request to the server (Don't forget to hide loading when the response is received)
-        
-        //TODO #7 Set response (meal)
+
+        //  Make request meals by category
+        view.showLoading();
+       Utils.getApi().getMealBySearch(mealName)
+               .enqueue(new Callback<Meals>() {
+                   @Override
+                   public void onResponse(@NonNull Call<Meals> call,@NonNull Response<Meals> response) {
+                       view.hideLoading();
+                       if(response.isSuccessful() && response.body() != null){
+                           view.setMeals(response.body().getMeals().get(0));
+                       }else{
+                           view.onErrorLoading(response.message());
+                       }
+                   }
+
+                   @Override
+                   public void onFailure(@NonNull Call<Meals> call, @NonNull Throwable t) {
+                       view.onErrorLoading(t.getLocalizedMessage());
+                       view.hideLoading();
+                   }
+               });
+
     }
 }

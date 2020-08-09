@@ -1,8 +1,5 @@
 /*-----------------------------------------------------------------------------
- - Developed by Haerul Muttaqin                                               -
- - Last modified 3/17/19 5:24 AM                                              -
- - Subscribe : https://www.youtube.com/haerulmuttaqin                         -
- - Copyright (c) 2019. All rights reserved                                    -
+                               -
  -----------------------------------------------------------------------------*/
 package com.haerul.foodsapp.model;
 
@@ -12,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
+//  implements Serializable to Categories class
 public class Categories implements Serializable {
 
     @SerializedName("categories")
@@ -26,6 +24,7 @@ public class Categories implements Serializable {
         this.categories = categories;
     }
 
+    // implements Serializable to Category class
     public static class Category implements Serializable {
 
         @SerializedName("idCategory")
